@@ -1,12 +1,16 @@
 provider "aws" {
-  region = "${var.aws_region}"
+  region = "${var.region}"
 }
 
-module "api-gateway" {
-  source = "modules/api-gateway"
+module "task-def" {
+  source = "modules/task-definitions"
 
-  ag_name       = "bricks-api"
-  nlb_uri       = "${var.nlb_uri}"
-  vpc_link_id   = "${var.vpc_link_id}"
-  ag_stage_name = "stage"
+  params = {
+    image_url         = "275511194806.dkr.ecr.ap-southeast-1.amazonaws.com/candidate_profile:123"
+    container_name    = "profile"
+    log_stream_prefix = "x"
+  }
+
+  task_definition_path = "config/task-definition/sample.json"
+  task_name            = "test-task"
 }
